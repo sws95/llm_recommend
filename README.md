@@ -1,13 +1,29 @@
-# llm_recommend
-llm을 이용한 옷 추천 프로젝트
+# LLM-based Fashion Recommendation System
 
-v1: 자연어 입력 → LLM reranking → 추천 (지금 만들 것)
-v2: 이미지 추가
-v3: 유저 로그인 + 히스토리 쌓이면 협업 필터링 추가
+## Overview
+H&M 데이터셋 기반 패션 추천 시스템입니다. 자연어 쿼리와 유저 히스토리를 기반으로 개인화된 패션 아이템을 추천합니다.
 
-이후 v2 끝나고 유저 데이터 쌓일 때까지 영화 같은 기본 추천 시스템 같이 병행
+## Architecture
+User Query / User History  
+→ FAISS Retrieval (후보 20개)  
+→ 중복 제거 (후보 5개)  
+→ Qwen2.5-3B Reranking  
+→ 추천 결과 + 한국어 이유  
 
-conda로 가상환경 만들어서 시작
-// 환경에서 venv나 conda 하면 인식을 못 해서 추후 docker나 poetry 할 예정 일단 글로벌로 설치
-Fashion-Gen, maryland polyvore dataset은 유저 데이터가 없어서 
-유저 구매 히스토리 + 아이템 텍스트 설명 둘 다 있는 H&M Personalized Fashion Recommendations Kaggle로 변경
+## Dataset
+- H&M Personalized Fashion Recommendations (Kaggle)
+- 105,542 items / 1,371,980 users / 31,788,324 transactions
+
+## Tech Stack
+- Python, PyTorch
+- Embedding: SentenceTransformer (all-MiniLM-L6-v2)
+- Vector Search: FAISS
+- LLM: Qwen2.5-3B-Instruct (local)
+- Fine-tuning: 진행 중
+
+## Roadmap
+- [x] v1: 자연어 입력 → FAISS retrieval → Qwen2.5 reranking + 한국어 추천 이유
+- [x] v1: 유저 히스토리 기반 추천
+- [ ] v1: Qwen2.5 한국어 파인튜닝
+- [ ] v2: 이미지 추가 (멀티모달)
+- [ ] v3: 유저 로그인 + 협업 필터링
